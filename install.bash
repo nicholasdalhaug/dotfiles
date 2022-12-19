@@ -15,13 +15,6 @@ else
     ln -s ${BASEDIR}/zshrc ~/.zshrc
 fi
 
-# # If we wwant to install the default .zshrc
-# if ! [ -f $HOME/.zshrc ]; then
-#     echo "ZSH: No .zshrc found, please follow the recommendations here (in 5 sec):"
-#     sleep 5
-#     zsh /usr/share/zsh/functions/Newuser/zsh-newuser-install
-# fi
-
 if ! [ -d $HOME/.oh-my-zsh ]; then
     echo "ZSH: Installing Oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
