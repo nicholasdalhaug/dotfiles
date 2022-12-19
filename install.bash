@@ -2,6 +2,47 @@
 
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# zsh
+if which zsh > /dev/null; then
+    echo "ZSH: Already exists"
+else
+    echo "ZSH: Installing zsh"
+    sudo apt-get install zsh
+
+    # Set zsh to default shell
+    chsh -s /bin/zsh
+
+    ln -s ${BASEDIR}/zshrc ~/.zshrc
+fi
+
+# # If we wwant to install the default .zshrc
+# if ! [ -f $HOME/.zshrc ]; then
+#     echo "ZSH: No .zshrc found, please follow the recommendations here (in 5 sec):"
+#     sleep 5
+#     zsh /usr/share/zsh/functions/Newuser/zsh-newuser-install
+# fi
+
+if ! [ -d $HOME/.oh-my-zsh ]; then
+    echo "ZSH: Installing Oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+
+    # Install powerline fonst to use agnoster theme
+    git clone https://github.com/powerline/fonts.git --depth=1
+    cd fonts
+    ./install.sh
+    cd ..
+    rm -rf fonts
+
+    # Set the font to default for the terminal
+    # Take the first profile
+    profile_id=$(dconf dump /org/gnome/terminal/legacy/profiles:/ | awk '/\[:/||/visible-name=/' | sed -n '1p' | sed -r 's/^\[(.*)\]$/\1/')
+    dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/use-system-font "false"
+    dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/font "'Meslo LG S for Powerline 10'"
+
+    # Get autosuggestions
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
 # bash
 if [ -f $HOME/.bashrc ]; then
     if grep -q "Source bashrc from dotfiles" $HOME/.bashrc; then
