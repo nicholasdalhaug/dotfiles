@@ -1,6 +1,7 @@
 {
     "files.autoSave": "afterDelay",
     "workbench.startupEditor": "none",
-    "editor.fontFamily": "Meslo LG S for Powerline",
-    "terminal.integrated.shell.linux": "/bin/zsh"
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "terminal.integrated.fontSize": 11,
+    "terminal.integrated.fontFamily": "Meslo LG S for Powerline"
 }
