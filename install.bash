@@ -23,6 +23,10 @@ else
     chsh -s /bin/zsh
 
     ln -s ${BASEDIR}/zshrc ~/.zshrc
+
+    if ! [ -f "/etc/zsh_command_not_found" ]; then
+        sudo apt-get install -y command-not-found
+    fi
 fi
 
 if ! [ -d $HOME/.oh-my-zsh ]; then
