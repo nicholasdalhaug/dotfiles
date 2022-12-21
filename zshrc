@@ -26,3 +26,5 @@ source $ZSH/oh-my-zsh.sh
 
 # To get apt install suggestions such as in bash
 source /etc/zsh_command_not_found
+
+alias python="python3"
