@@ -1,5 +1,15 @@
 #!/bin/bash
 
+HEADLESS=false
+if [ $# -ne 0 ]; then
+    if [ $1 == "--headless" ]; then
+        HEADLESS=true
+    else
+        echo "Usage: install.bash [--headless]"
+        exit 1
+    fi
+fi
+
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # zsh
@@ -28,9 +38,11 @@ if ! [ -d $HOME/.oh-my-zsh ]; then
 
     # Set the font to default for the terminal
     # Take the first profile
-    profile_id=$(dconf dump /org/gnome/terminal/legacy/profiles:/ | awk '/\[:/||/visible-name=/' | sed -n '1p' | sed -r 's/^\[(.*)\]$/\1/')
-    dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/use-system-font "false"
-    dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/font "'Meslo LG S for Powerline 10'"
+    if ! $HEADLESS; then
+        profile_id=$(dconf dump /org/gnome/terminal/legacy/profiles:/ | awk '/\[:/||/visible-name=/' | sed -n '1p' | sed -r 's/^\[(.*)\]$/\1/')
+        dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/use-system-font "false"
+        dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/font "'Meslo LG S for Powerline 10'"
+    fi
 
     # Get autosuggestions
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -65,16 +77,18 @@ else
 fi
 
 # vscode
-loc_from=$HOME/.config/Code/User/settings.json
-loc_to=${BASEDIR}/vscode_settings.json
-if [ -f $loc_from ]; then
-    link=$(readlink -f "$loc_from")
-    if [ "$link" == "$loc_to" ]; then
-        echo "VSCode: Already exists"
+if ! $HEADLESS; then
+    loc_from=$HOME/.config/Code/User/settings.json
+    loc_to=${BASEDIR}/vscode_settings.json
+    if [ -f $loc_from ]; then
+        link=$(readlink -f "$loc_from")
+        if [ "$link" == "$loc_to" ]; then
+            echo "VSCode: Already exists"
+        else
+            echo "VSCode: Please delete the existing $loc_from to allow for the symlink"
+        fi
     else
-        echo "VSCode: Please delete the existing $loc_from to allow for the symlink"
+        echo "VSCode: Adding symlink to vscode settings"
+        ln -s $loc_to $loc_from
     fi
-else
-    echo "VSCode: Adding symlink to vscode settings"
-    ln -s $loc_to $loc_from
 fi
