@@ -7,7 +7,7 @@ if which zsh > /dev/null; then
     echo "ZSH: Already exists"
 else
     echo "ZSH: Installing zsh"
-    sudo apt-get install zsh
+    sudo apt-get install -y zsh
 
     # Set zsh to default shell
     chsh -s /bin/zsh
