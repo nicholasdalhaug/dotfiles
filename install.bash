@@ -34,15 +34,15 @@ if ! [ -d $HOME/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
     # Install powerline fonst to use agnoster theme
-    git clone https://github.com/powerline/fonts.git --depth=1
-    cd fonts
-    ./install.sh
-    cd ..
-    rm -rf fonts
-
-    # Set the font to default for the terminal
-    # Take the first profile
     if ! $HEADLESS; then
+        git clone https://github.com/powerline/fonts.git --depth=1
+        cd fonts
+        ./install.sh
+        cd ..
+        rm -rf fonts
+
+        # Set the font to default for the terminal
+        # Take the first profile
         profile_id=$(dconf dump /org/gnome/terminal/legacy/profiles:/ | awk '/\[:/||/visible-name=/' | sed -n '1p' | sed -r 's/^\[(.*)\]$/\1/')
         dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/use-system-font "false"
         dconf write /org/gnome/terminal/legacy/profiles:/$profile_id/font "'Meslo LG S for Powerline 10'"
