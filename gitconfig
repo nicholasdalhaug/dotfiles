@@ -1,3 +1,5 @@
 [user]
 	name = Nicholas Dalhaug
 	email = nicholasdalhaug@gmail.com
+[core]
+	editor = vim

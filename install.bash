@@ -96,3 +96,11 @@ if ! $HEADLESS; then
         ln -s $loc_to $loc_from
     fi
 fi
+
+# Install vim
+if which vim > /dev/null; then
+    echo "VIM: already exists"
+else
+    echo "VIM: Installing"
+    sudo apt-get install -y vim
+fi
