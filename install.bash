@@ -24,6 +24,8 @@ else
 
     ln -s ${BASEDIR}/zshrc ~/.zshrc
 
+    sudo apt-get update
+
     if ! [ -f "/etc/zsh_command_not_found" ]; then
         sudo apt-get install -y command-not-found
     fi
